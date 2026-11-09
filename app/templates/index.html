@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f9f9fb" />
+    <title>Курьерский шлюз</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+        <a class="brand" href="/" aria-label="Курьерский шлюз">
+          <img class="brand-logo" src="/static/logo.png" alt="Магнит Тех" />
+          <span>Курьерский шлюз</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <h1 id="page-title">Отправления</h1>
+        <p>Отслеживайте тестовые корпоративные доставки в одном шлюзе.</p>
+      </section>
+
+      <div class="workspace">
+        <section class="creation-panel" aria-labelledby="creation-title">
+          <div class="section-heading">
+            <h2 id="creation-title">Новая отправка</h2>
+          </div>
+          <form id="shipment-form">
+            <label>Откуда<input name="origin" value="Офис Москва" minlength="2" maxlength="120" required /></label>
+            <label>Куда<input name="destination" value="Офис Санкт-Петербург" minlength="2" maxlength="120" required /></label>
+            <label>Получатель<input name="recipient" placeholder="Алексей Смирнов" minlength="2" maxlength="120" required /></label>
+            <label>Содержимое<textarea name="description" placeholder="Документы" minlength="2" maxlength="500" required></textarea></label>
+            <button class="primary-button" type="submit"><span aria-hidden="true">+</span> Создать отправление</button>
+          </form>
+        </section>
+
+        <section class="tracking-panel" aria-labelledby="tracking-title">
+          <div class="tracking-heading">
+            <div>
+              <h2 id="tracking-title">Отслеживание</h2>
+            </div>
+            <span id="shipment-count" class="shipment-count">0</span>
+          </div>
+          <div id="shipment-list" class="shipment-list" aria-live="polite">
+            <div class="empty-state">
+              <span class="empty-mark" aria-hidden="true">SHP</span>
+              <p>Создайте первую тестовую отправку, чтобы начать отслеживание.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <a href="{{ report_issue_url }}" target="_blank" rel="noopener noreferrer">Report an Issue</a>
+    </footer>
+
+    <div id="notice" class="notice" role="status" hidden></div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

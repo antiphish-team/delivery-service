@@ -1,0 +1,22 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5020:5000"
+    environment:
+      COURIER_WEBHOOK_SECRET: "cs_live_7f1a9c4e3b86d25f0a9e7c41b68d32f5"
+      FLAG: "flag{...}"
+      REPORT_ISSUE_URL: "https://startx.team"
+      DATABASE_PATH: /app/data/shipments.db
+      INACTIVE_SHIPMENT_RETENTION_HOURS: "24"
+      PROCESSED_EVENT_RETENTION_SECONDS: "600"
+      CLEANUP_INTERVAL_SECONDS: "300"
+    volumes:
+      - courier-data:/app/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  courier-data:
