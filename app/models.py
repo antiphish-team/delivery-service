@@ -10,6 +10,13 @@ class ShipmentCreate(BaseModel):
     description: str = Field(min_length=2, max_length=500)
 
 
+class SupportRequestCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    shipmentId: str = Field(min_length=5, max_length=40)
+    message: str = Field(min_length=2, max_length=1000)
+
+
 class CourierEvent(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

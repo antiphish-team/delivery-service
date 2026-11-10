@@ -40,9 +40,17 @@ def initialize_database() -> None:
                 event_id TEXT PRIMARY KEY,
                 processed_at TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS support_requests (
+                id TEXT PRIMARY KEY,
+                shipment_id TEXT NOT NULL,
+                session_id TEXT NOT NULL,
+                message TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            );
             CREATE INDEX IF NOT EXISTS idx_shipments_session ON shipments(session_id);
             CREATE INDEX IF NOT EXISTS idx_shipments_cleanup ON shipments(status, updated_at);
             CREATE INDEX IF NOT EXISTS idx_events_cleanup ON processed_events(processed_at);
+            CREATE INDEX IF NOT EXISTS idx_support_requests_session ON support_requests(session_id);
             """
         )
 

@@ -17,12 +17,11 @@ from config import (
     INACTIVE_SHIPMENT_RETENTION_HOURS,
     PROCESSED_EVENT_RETENTION_SECONDS,
     REPORT_ISSUE_URL,
-    SESSION_COOKIE,
     WEBHOOK_SECRET,
     WEBHOOK_TOLERANCE_SECONDS,
 )
 from database import cleanup_expired_records, connection, initialize_database, utc_now
-from models import CourierEvent, ShipmentCreate
+from models import CourierEvent, ShipmentCreate, SupportRequestCreate
 from sessions import guest_session
 from state_machine import ALLOWED_TRANSITIONS, STATUS_LABELS
 
@@ -79,6 +78,17 @@ def index(request: Request, response: Response, courier_session: str | None = Co
     )
 
 
+@app.get("/support", response_class=HTMLResponse, include_in_schema=False)
+def support(request: Request, response: Response, courier_session: str | None = Cookie(default=None)):
+    guest_session(response, courier_session)
+    return templates.TemplateResponse(
+        request=request,
+        name="support.html",
+        context={"report_issue_url": REPORT_ISSUE_URL},
+        headers=dict(response.headers),
+    )
+
+
 @app.get("/api/shipments")
 def list_shipments(response: Response, courier_session: str | None = Cookie(default=None)):
     session_id = guest_session(response, courier_session)
@@ -118,6 +128,26 @@ def get_shipment(shipment_id: str, response: Response, courier_session: str | No
     if shipment is None:
         raise HTTPException(status_code=404, detail="Shipment not found")
     return shipment_payload(shipment, include_flag=True)
+
+
+@app.post("/api/support-requests", status_code=201)
+def create_support_request(
+    payload: SupportRequestCreate,
+    response: Response,
+    courier_session: str | None = Cookie(default=None),
+):
+    session_id = guest_session(response, courier_session)
+    shipment = load_owned_shipment(payload.shipmentId, session_id)
+    if shipment is None:
+        raise HTTPException(status_code=404, detail="Shipment not found")
+
+    ticket_id = f"SUP-{secrets.token_hex(5).upper()}"
+    with connection() as database:
+        database.execute(
+            "INSERT INTO support_requests (id, shipment_id, session_id, message, created_at) VALUES (?, ?, ?, ?, ?)",
+            (ticket_id, payload.shipmentId, session_id, payload.message, utc_now()),
+        )
+    return {"ticketId": ticket_id}
 
 
 def verify_webhook(request: Request, raw_body: bytes) -> None:

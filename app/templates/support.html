@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f9f9fb" />
+    <title>Поддержка | Курьерский шлюз</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Курьерский шлюз">
+          <img class="brand-logo" src="/static/logo.png" alt="Магнит Тех" />
+          <span>Курьерский шлюз</span>
+        </a>
+        <nav class="site-nav" aria-label="Основная навигация">
+          <a class="support-link" href="/">Отправления</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="support-layout" aria-labelledby="page-title">
+        <div class="support-intro">
+          <h1 id="page-title">Поддержка</h1>
+          <p>Оставьте обращение по вашей отправке, указав её номер.</p>
+        </div>
+
+        <section class="support-panel" aria-labelledby="support-form-title">
+          <h2 id="support-form-title">Новое обращение</h2>
+          <form id="support-form" class="support-form">
+            <label>Номер отправления<input name="shipmentId" placeholder="SHP-XXXXXXXXXX" minlength="5" maxlength="40" required /></label>
+            <label>Сообщение<textarea name="message" placeholder="Опишите ваш вопрос" minlength="2" maxlength="1000" required></textarea></label>
+            <button class="primary-button" type="submit">Отправить обращение</button>
+          </form>
+          <p id="support-notice" class="support-notice" role="status" hidden></p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a href="{{ report_issue_url }}" target="_blank" rel="noopener noreferrer">Report an Issue</a>
+    </footer>
+
+    <script src="/static/support.js"></script>
+  </body>
+</html>
